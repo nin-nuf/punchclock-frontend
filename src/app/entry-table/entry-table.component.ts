@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Entry} from "../../shared/model/entry";
+import {EntryService} from "../../shared/entry.service";
+import {tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-entry-table',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EntryTableComponent implements OnInit {
 
-  constructor() { }
+  constructor(private entryService: EntryService) {
+  }
+
+  public entries: Entry[] | undefined;
 
   ngOnInit(): void {
+    this.entryService.getEntries().pipe(
+      tap((entries) => this.entries = entries)
+    ).subscribe();
+    console.log(this.entries)
   }
 
 }
